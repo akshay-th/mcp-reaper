@@ -1,0 +1,36 @@
+{
+  "name": "mcp-reaper",
+  "version": "0.1.0",
+  "description": "Find and kill orphaned MCP server processes left behind by Claude Code, Codex, Cursor, Gemini CLI and other AI agents.",
+  "type": "module",
+  "bin": {
+    "mcp-reaper": "./bin/cli.js"
+  },
+  "files": [
+    "src",
+    "bin"
+  ],
+  "scripts": {
+    "test": "node --test test/*.test.js"
+  },
+  "engines": {
+    "node": ">=18.3"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "claude-code",
+    "codex",
+    "cursor",
+    "gemini-cli",
+    "orphan-processes",
+    "memory-leak",
+    "process-cleanup"
+  ],
+  "author": "akshay-th",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/akshay-th/mcp-reaper.git"
+  }
+}

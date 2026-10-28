@@ -5,6 +5,7 @@ import { parseToml } from '../src/toml.js';
 import { serversFromConfig, signatureOf, configLocations } from '../src/configs.js';
 import { parseDuration } from '../src/duration.js';
 import { launchdPlist, systemdUnits } from '../src/schedule.js';
+import { join } from 'node:path';
 
 test('parseEtime handles every ps format', () => {
   assert.equal(parseEtime('00:05'), 5);
@@ -79,9 +80,9 @@ test('signatureOf picks the distinctive argument', () => {
 
 test('configLocations honours CLAUDE_CONFIG_DIR and CODEX_HOME', () => {
   const locs = configLocations('/home/me', 'linux', { CLAUDE_CONFIG_DIR: '/cfg/claude', CODEX_HOME: '/cfg/codex' });
-  assert.equal(locs.find((l) => l.client === 'Claude Code').path, '/cfg/claude/.claude.json');
-  assert.equal(locs.find((l) => l.client === 'Codex').path, '/cfg/codex/config.toml');
-  assert.equal(locs.find((l) => l.client === 'VS Code').path, '/home/me/.config/Code/User/mcp.json');
+  assert.equal(locs.find((l) => l.client === 'Claude Code').path, join('/cfg/claude', '.claude.json'));
+  assert.equal(locs.find((l) => l.client === 'Codex').path, join('/cfg/codex', 'config.toml'));
+  assert.equal(locs.find((l) => l.client === 'VS Code').path, join('/home/me', '.config', 'Code', 'User', 'mcp.json'));
 });
 
 test('parseDuration', () => {

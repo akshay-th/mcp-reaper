@@ -11,7 +11,7 @@
     "bin"
   ],
   "scripts": {
-    "test": "node --test test/*.test.js"
+    "test": "node --test test/classify.test.js test/integration.test.js test/parse.test.js"
   },
   "engines": {
     "node": ">=18.3"

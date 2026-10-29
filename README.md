@@ -15,7 +15,7 @@ The usual workaround is a manual `pkill -f some-server`. `mcp-reaper` does the s
 
 ```
 $ mcp-reaper
-orphaned  playwright  pid 41233 +6  612 MB  up 2d  agent gone
+orphaned  @playwright/mcp  pid 41233 +6  612 MB  up 2d  agent gone
           npm exec @playwright/mcp@latest
 orphaned  mcp-server-github  pid 40110 +1  88 MB  up 3d  agent gone
           npx -y @modelcontextprotocol/server-github

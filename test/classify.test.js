@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { classify, mcpTokenOf, hostOf } from '../src/classify.js';
+import { classify, mcpTokenOf, hostOf, prettyLabel } from '../src/classify.js';
 
 const P = (pid, ppid, command, extra = {}) => ({ pid, ppid, command, rssKb: 10240, ageSec: 3600, ...extra });
 
@@ -134,5 +134,19 @@ test('mcpTokenOf recognises common server naming styles', () => {
   }
   for (const cmd of ['node server.js', '/usr/bin/vim mcpfoo.txt', 'git commit -m mcp']) {
     assert.equal(mcpTokenOf(cmd), null, cmd);
+  }
+});
+
+test('labels use the package name instead of the script path', () => {
+  for (const [tok, want] of [
+    ['@playwright/mcp@latest', '@playwright/mcp'],
+    ['/Users/me/.npm/_npx/9f1c/node_modules/@playwright/mcp/cli.js', '@playwright/mcp'],
+    ['node_modules/.bin/mcp-server-github', 'mcp-server-github'],
+    ['C:\\Users\\me\\AppData\\npm\\node_modules\\mcp-remote\\dist\\proxy.js', 'mcp-remote'],
+    ['/x/@modelcontextprotocol/server-github/dist/index.js', '@modelcontextprotocol/server-github'],
+    ['mcp/github', 'mcp/github'],
+    ['blender-mcp', 'blender-mcp'],
+  ]) {
+    assert.equal(prettyLabel(tok), want, tok);
   }
 });

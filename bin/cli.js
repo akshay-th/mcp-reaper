@@ -86,7 +86,8 @@ function printTable(servers, { all }) {
     console.log(
       `${tag} ${bold(g.label)}  ${dim(`pid ${g.rootPid}${g.pids.length > 1 ? ` +${g.pids.length - 1}` : ''}`)}  ${fmtMem(g.rssKb)}  up ${fmtAge(g.ageSec)}  ${owner}`,
     );
-    console.log(dim(`          ${g.command.length > 110 ? `${g.command.slice(0, 107)}...` : g.command}`));
+    const cmd = g.command.split(homedir()).join('~');
+    console.log(dim(`          ${cmd.length > 110 ? `${cmd.slice(0, 107)}...` : cmd}`));
   }
   const dupes = countDupes(attached);
   if (dupes.length) console.log(dim(`\nduplicates across agents: ${dupes.map(([l, n]) => `${l} ×${n}`).join(', ')}`));

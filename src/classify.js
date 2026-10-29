@@ -59,6 +59,20 @@ export function mcpTokenOf(command) {
   return null;
 }
 
+/** "/u/.npm/_npx/9f/node_modules/@playwright/mcp/cli.js" -> "@playwright/mcp" */
+export function prettyLabel(tok) {
+  const s = tok.replace(/\\/g, '/').replace(/@latest$/, '');
+  const nm = s.lastIndexOf('node_modules/');
+  if (nm >= 0) {
+    const [a, b] = s.slice(nm + 'node_modules/'.length).split('/');
+    if (a === '.bin' && b) return b;
+    if (a?.startsWith('@') && b) return `${a}/${b}`;
+    if (a) return a;
+  }
+  const scoped = s.match(/(?:^|\/)(@[^/@]+\/[^/@]+)\//);
+  return scoped ? scoped[1] : s;
+}
+
 export function isWrapper(proc) {
   const first = tokens(proc.command)[0] || '';
   return WRAPPER.test(base(first));
@@ -108,7 +122,7 @@ export function classify(procs, options = {}) {
     }
     for (const re of match) if (re.test(p.command)) return { label: (re.exec(p.command) || [])[0], source: '--match' };
     const tok = mcpTokenOf(p.command);
-    if (tok && !hostOf(p)) return { label: tok.replace(/@latest$/, ''), source: 'name' };
+    if (tok && !hostOf(p)) return { label: prettyLabel(tok), source: 'name' };
     if (tok && /\bmcp\s+(serve|start|server)\b/i.test(p.command)) return { label: tok, source: 'name' };
     return null;
   }
